@@ -1,0 +1,19 @@
+# Add steps that build, run tests, deploy:
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+   mvn clean
+  displayName: 'build and test java calculator'
+
+- script: |
+   mvn verify package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=javaprogramwithmavenprojectstructure -Dsonar.projectkey=javaprojectwithmavenstructure -Dsonar.login=88f3168527b1f68ce5bb748583cd5e73ab50b734
+  displayName: 'Run Static Application Security Testing Scan in Azure DevOps Pipeline'
+
+- script: |
+   mvn clean package
+  displayName: 'Run unit test on java calculator'
