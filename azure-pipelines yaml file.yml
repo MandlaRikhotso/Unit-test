@@ -19,4 +19,4 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '21'
     publishJUnitResults: true  # This ensures JUnit results are published in the build summary
-    testResultsFiles: 'azure-pipelines.yml'
+    testResultsFiles: 'azure-pipelines.yaml'
