@@ -1,19 +1,22 @@
-# Add steps that build, run tests, deploy:
+# Azure DevOps YAML pipeline for a Maven Java project
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'  # Or windows-latest if you prefer Windows
 
 steps:
-- script: |
-   mvn clean
-  displayName: 'build and test java calculator'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: 'https://github.com/MandlaRikhotso/Unit-test.git'
+    testRunTitle: 'Maven Unit Tests'
 
-- script: |
-   mvn verify package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=javaprogramwithmavenprojectstructure -Dsonar.projectkey=javaprojectwithmavenstructure -Dsonar.login=88f3168527b1f68ce5bb748583cd5e73ab50b734
-  displayName: 'Run Static Application Security Testing Scan in Azure DevOps Pipeline'
-
-- script: |
-   mvn clean package
-  displayName: 'Run unit test on java calculator'
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-B'  # Batch mode
+    goals: 'clean test'  # Run the clean and test phases
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '21'
+    publishJUnitResults: true  # This ensures JUnit results are published in the build summary
+    testResultsFiles: 'azure-pipelines.yaml'
